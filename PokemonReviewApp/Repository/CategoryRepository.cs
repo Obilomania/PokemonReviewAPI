@@ -26,6 +26,12 @@ namespace PokemonReviewApp.Repository
             return Save();
         }
 
+        public bool DeleteCategory(Category category)
+        {
+            _categoryRepository.Remove(category);
+            return Save();
+        }
+
         public ICollection<Category> GetCategories()
         {
             return _categoryRepository.Categories.ToList();
@@ -41,10 +47,21 @@ namespace PokemonReviewApp.Repository
             return _categoryRepository.PokemonCategories.Where(e => e.CategoryId == categoryId).Select(c => c.Pokemon).ToList();
         }
 
+        public ICollection<Pokemon> GetPokemonByCategory(int categoryId)
+        {
+            return _categoryRepository.PokemonCategories.Where(e => e.CategoryId == categoryId).Select(c => c.Pokemon).ToList();
+        }
+
         public bool Save()
         {
             var saved = _categoryRepository.SaveChanges();
             return saved > 0 ? true : false;
+        }
+
+        public bool UpdateCategory(Category category)
+        {
+            _categoryRepository.Update(category);
+            return Save();
         }
     }
 }
