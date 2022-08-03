@@ -14,6 +14,19 @@ namespace PokemonReviewApp.Repository
             _ownerRepository = context;
             _mapper = mapper;
         }
+
+        public bool CreateOwner(Owner owner)
+        {
+            _ownerRepository.Add(owner);
+            return Save();
+        }
+
+        public bool DeleteOwner(Owner owner)
+        {
+            _ownerRepository.Remove(owner);
+            return Save();
+        }
+
         public Owner GetOwner(int ownerId)
         {
             return _ownerRepository.Owners.Where(o => o.Id == ownerId).FirstOrDefault();
@@ -37,6 +50,18 @@ namespace PokemonReviewApp.Repository
         public bool OwnerExists(int ownerId)
         {
             return _ownerRepository.Owners.Any(o => o.Id == ownerId);
+        }
+
+        public bool Save()
+        {
+            var saved = _ownerRepository.SaveChanges();
+            return saved > 0 ? true : false;
+        }
+
+        public bool UpdateOwner(Owner owner)
+        {
+            _ownerRepository.Update(owner);
+            return Save();
         }
     }
 }
