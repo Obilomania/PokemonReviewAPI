@@ -19,6 +19,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IPokemonRepository, PokemonRepository > ();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository > ();
 builder.Services.AddScoped<ICountryRepository, CountryRepository > ();
+builder.Services.AddScoped<IOwnerRepository, OwnerRepository > ();
 
 
 var app = builder.Build();
