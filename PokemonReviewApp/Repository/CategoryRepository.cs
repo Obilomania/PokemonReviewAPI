@@ -6,35 +6,35 @@ namespace PokemonReviewApp.Repository
 {
     public class CategoryRepository : ICategoryRepository
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _categoryRepository;
 
         public CategoryRepository(ApplicationDbContext context)
         {
-            _context = context;
+            _categoryRepository = context;
         }
 
 
 
         public bool CategoryExists(int id)
         {
-            return _context.Categories.Any(c => c.Id == id);
+            return _categoryRepository.Categories.Any(c => c.Id == id);
         }
 
 
 
         public ICollection<Category> GetCategories()
         {
-            return _context.Categories.ToList();
+            return _categoryRepository.Categories.ToList();
         }
 
         public Category GetCategory(int id)
         {
-            return _context.Categories.Where(e => e.Id == id).FirstOrDefault();
+            return _categoryRepository.Categories.Where(e => e.Id == id).FirstOrDefault();
         }
 
         public ICollection<Pokemon> GetPokemonbyCategory(int categoryId)
         {
-            return _context.PokemonCategories.Where(e => e.CategoryId == categoryId).Select(c => c.Pokemon).ToList();
+            return _categoryRepository.PokemonCategories.Where(e => e.CategoryId == categoryId).Select(c => c.Pokemon).ToList();
         }
     }
 }

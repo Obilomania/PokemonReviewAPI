@@ -11,12 +11,12 @@ namespace PokemonReviewApp.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        private readonly ICategoryRepository _context;
+        private readonly ICategoryRepository _categoryRepository;
         private readonly IMapper _mapper;
 
         public CategoryController(ICategoryRepository context, IMapper mapper)
         {
-            _context = context;
+            _categoryRepository = context;
             _mapper = mapper;
         }
 
@@ -26,7 +26,7 @@ namespace PokemonReviewApp.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<Category>))]
         public IActionResult GetCategories()
         {
-            var categories = _mapper.Map<List<CategoryDto>>(_context.GetCategories());
+            var categories = _mapper.Map<List<CategoryDto>>(_categoryRepository.GetCategories());
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -42,11 +42,11 @@ namespace PokemonReviewApp.Controllers
         [ProducesResponseType(400)]
         public IActionResult GetCategories(int categoryId)
         {
-            if (!_context.CategoryExists(categoryId))
+            if (!_categoryRepository.CategoryExists(categoryId))
             {
                 return NotFound();
             }
-            var category = _mapper.Map<CategoryDto>(_context.GetCategory(categoryId));
+            var category = _mapper.Map<CategoryDto>(_categoryRepository.GetCategory(categoryId));
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -62,7 +62,7 @@ namespace PokemonReviewApp.Controllers
         [ProducesResponseType(400)]
         public IActionResult GetPokemonByCategoryId(int categoryId)
         {
-            var pokemons = _mapper.Map<List<PokemonDto>>(_context.GetPokemonbyCategory(categoryId));
+            var pokemons = _mapper.Map<List<PokemonDto>>(_categoryRepository.GetPokemonbyCategory(categoryId));
             if (!ModelState.IsValid)
             {
                 return BadRequest();

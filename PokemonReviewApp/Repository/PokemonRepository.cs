@@ -6,25 +6,25 @@ namespace PokemonReviewApp.Repository
 {
     public class PokemonRepository : IPokemonRepository
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _pokemonRepository;
         public PokemonRepository(ApplicationDbContext context)
         {
-            _context = context;
+            _pokemonRepository = context;
         }
 
         public Pokemon GetPokemon(int id)
         {
-            return _context.Pokemons.Where(p => p.Id == id).FirstOrDefault();
+            return _pokemonRepository.Pokemons.Where(p => p.Id == id).FirstOrDefault();
         }
 
         public Pokemon GetPokemon(string name)
         {
-            return _context.Pokemons.Where(p => p.Name == name).FirstOrDefault();
+            return _pokemonRepository.Pokemons.Where(p => p.Name == name).FirstOrDefault();
         }
 
         public decimal GetPokemonRating(int pokeId)
         {
-            var review = _context.Reviews.Where(p => p.Pokemon.Id == pokeId);
+            var review = _pokemonRepository.Reviews.Where(p => p.Pokemon.Id == pokeId);
             if (review.Count() <= 0 )
             {
                 return 0;
@@ -37,12 +37,12 @@ namespace PokemonReviewApp.Repository
 
         public ICollection<Pokemon> GetPokemons()
         {
-            return _context.Pokemons.OrderBy(p => p.Id).ToList();
+            return _pokemonRepository.Pokemons.OrderBy(p => p.Id).ToList();
         }
 
         public bool PokemonExists(int pokeId)
         {
-            return _context.Pokemons.Any(p => p.Id == pokeId);
+            return _pokemonRepository.Pokemons.Any(p => p.Id == pokeId);
         }
     }
 }

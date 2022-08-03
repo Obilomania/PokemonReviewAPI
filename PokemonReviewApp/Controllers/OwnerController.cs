@@ -11,14 +11,14 @@ namespace PokemonReviewApp.Controllers
     [ApiController]
     public class OwnerController : ControllerBase
     {
-        private readonly IOwnerRepository _context;
+        private readonly IOwnerRepository _ownerRepository;
         private readonly IMapper _mapper;
 
         public OwnerController(IOwnerRepository ownerRepository,
             ICountryRepository countryRepository,
             IMapper mapper)
         {
-            _context = ownerRepository;
+            _ownerRepository = ownerRepository;
             _mapper = mapper;
         }
 
@@ -28,7 +28,7 @@ namespace PokemonReviewApp.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<Owner>))]
         public IActionResult GetOwners()
         {
-            var owners = _mapper.Map<List<OwnerDto>>(_context.GetOwners());
+            var owners = _mapper.Map<List<OwnerDto>>(_ownerRepository.GetOwners());
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -41,10 +41,10 @@ namespace PokemonReviewApp.Controllers
         [ProducesResponseType(400)]
         public IActionResult GetOwner(int ownerId)
         {
-            if (!_context.OwnerExists(ownerId))
+            if (!_ownerRepository.OwnerExists(ownerId))
                 return NotFound();
 
-            var owner = _mapper.Map<OwnerDto>(_context.GetOwner(ownerId));
+            var owner = _mapper.Map<OwnerDto>(_ownerRepository.GetOwner(ownerId));
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -57,13 +57,13 @@ namespace PokemonReviewApp.Controllers
         [ProducesResponseType(400)]
         public IActionResult GetPokemonByOwner(int ownerId)
         {
-            if (!_context.OwnerExists(ownerId))
+            if (!_ownerRepository.OwnerExists(ownerId))
             {
                 return NotFound();
             }
 
             var owner = _mapper.Map<List<PokemonDto>>(
-                _context.GetPokemonByOwner(ownerId));
+                _ownerRepository.GetPokemonByOwner(ownerId));
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

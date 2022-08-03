@@ -7,36 +7,36 @@ namespace PokemonReviewApp.Repository
 {
     public class OwnerRepository : IOwnerRepository
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _ownerRepository;
         private readonly IMapper _mapper;
         public OwnerRepository(ApplicationDbContext context, IMapper mapper)
         {
-            _context = context;
+            _ownerRepository = context;
             _mapper = mapper;
         }
         public Owner GetOwner(int ownerId)
         {
-            return _context.Owners.Where(o => o.Id == ownerId).FirstOrDefault();
+            return _ownerRepository.Owners.Where(o => o.Id == ownerId).FirstOrDefault();
         }
 
         public ICollection<Owner> GetOwnerOfPokemon(int pokeId)
         {
-            return _context.PokemonOwners.Where(p => p.Pokemon.Id == pokeId).Select(o => o.Owner).ToList();
+            return _ownerRepository.PokemonOwners.Where(p => p.Pokemon.Id == pokeId).Select(o => o.Owner).ToList();
         }
 
         public ICollection<Owner> GetOwners()
         {
-            return _context.Owners.ToList();
+            return _ownerRepository.Owners.ToList();
         }
 
         public ICollection<Pokemon> GetPokemonByOwner(int ownerId)  
         {
-            return _context.PokemonOwners.Where(p => p.Owner.Id == ownerId).Select(p => p.Pokemon).ToList();
+            return _ownerRepository.PokemonOwners.Where(p => p.Owner.Id == ownerId).Select(p => p.Pokemon).ToList();
         }
 
         public bool OwnerExists(int ownerId)
         {
-            return _context.Owners.Any(o => o.Id == ownerId);
+            return _ownerRepository.Owners.Any(o => o.Id == ownerId);
         }
     }
 }

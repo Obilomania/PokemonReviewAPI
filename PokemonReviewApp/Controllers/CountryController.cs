@@ -11,12 +11,12 @@ namespace PokemonReviewApp.Controllers
     [ApiController]
     public class CountryController : ControllerBase
     {
-        private readonly ICountryRepository _context;
+        private readonly ICountryRepository _countryRepository;
         private readonly IMapper _mapper;
 
         public CountryController(ICountryRepository context, IMapper mapper)
         {
-            _context = context;
+            _countryRepository = context;
             _mapper = mapper;
         }
 
@@ -26,7 +26,7 @@ namespace PokemonReviewApp.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<Country>))]
         public IActionResult GetCountries()
         {
-            var countries = _mapper.Map<List<CountryDto>>(_context.GetCountries());
+            var countries = _mapper.Map<List<CountryDto>>(_countryRepository.GetCountries());
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -41,11 +41,11 @@ namespace PokemonReviewApp.Controllers
         [ProducesResponseType(400)]
         public IActionResult GetPokemon(int countryId)
         {
-            if (!_context.CountryExists(countryId))
+            if (!_countryRepository.CountryExists(countryId))
             {
                 return NotFound();
             }
-            var countries = _mapper.Map<CountryDto>(_context.GetCountry(countryId));
+            var countries = _mapper.Map<CountryDto>(_countryRepository.GetCountry(countryId));
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -59,7 +59,7 @@ namespace PokemonReviewApp.Controllers
         [ProducesResponseType(400)]
         public IActionResult GetCountryOfAnOwner(int ownerId)
         {
-            var country = _mapper.Map<CountryDto>(_context.GetCountryByOwner(ownerId));
+            var country = _mapper.Map<CountryDto>(_countryRepository.GetCountryByOwner(ownerId));
             if (!ModelState.IsValid)
             {
                 return BadRequest();
