@@ -1,1 +1,1 @@
-# PokemonReviewApp
+# PokemonReviewAPI
